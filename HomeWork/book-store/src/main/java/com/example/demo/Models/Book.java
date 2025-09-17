@@ -13,9 +13,7 @@ public class Book {
     private String author_name;
     private Float price;
 	
-    public void setId(Integer id) {
-        this.id = id;
-    }
+   
 
   
     public Float getPrice() {

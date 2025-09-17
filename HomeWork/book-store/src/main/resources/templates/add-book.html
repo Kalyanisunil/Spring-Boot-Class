@@ -7,24 +7,25 @@
 <body class="container mt-5">
 <h1>Add Book</h1>
 
-<form th:action="@{/saveBook}" th:object="${book}" method="post" class="border p-4 rounded bg-light">
+<form th:action="@{/saveBook}"  method="post" class="border p-4 rounded bg-light">
     <div class="mb-3">
         <label class="form-label">Title</label>
-        <input type="text" th:field="*{title}" class="form-control" required>
+        <input type="text" name="title" class="form-control" required>
     </div>
 
     <div class="mb-3">
         <label class="form-label">Author</label>
-        <input type="text" th:field="*{author}" class="form-control" required>
+        <input type="text" name="author_name" class="form-control" required>
     </div>
 
     <div class="mb-3">
         <label class="form-label">Price</label>
-        <input type="number" step="0.01" th:field="*{price}" class="form-control" required>
+        <input type="number" name="price" step="0.01" class="form-control" required>
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>
-    <a href="/books" class="btn btn-secondary">Back</a>
+   
 </form>
+<a th:href="@{/Book}">Back to List</a>
 </body>
 </html>
