@@ -22,6 +22,12 @@ public class AddStudentController {
 	 	return "addStudent";
 	}
 
+@GetMapping("/Students")
+  public String listStudents(Model model) 
+{
+	model.addAttribute("students", students);
+    return "students"; 
+}
 
 
 @PostMapping("/submit")
@@ -32,7 +38,7 @@ public String  saveStudent(@RequestParam int id  , @RequestParam String name ,@R
 	
 		  students.add(student);
 		  model.addAttribute("student", student);
-//    return "success";	
+
 		  return "redirect:/Students";
 }
 }
