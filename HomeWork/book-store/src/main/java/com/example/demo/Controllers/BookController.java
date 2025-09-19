@@ -1,5 +1,7 @@
 package com.example.demo.Controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +21,21 @@ public class BookController {
 		return "books";
 	}
 
-@GetMapping("/addbook")
-public String addBookForm(Model model) {
-//	Book b=new Book();
-//    model.addAttribute("books", b);
-    return "add-book";
-}
+	@GetMapping("/addbook")
+	public String addBookForm(Model model) {
+	//	Book b=new Book();
+	//    model.addAttribute("books", b);
+	    return "add-book";
+	}
 
+	@GetMapping("/bookName")
+	public String Bookdetails(Model model) {
+	    List<Object[]> namesAndPricesList = bookrepository.findNamesAndPrices();
+	    model.addAttribute("namesAndPrices", namesAndPricesList);
+	    return "bookName";
+	}
+	
+	
 	@Autowired
 		private BookRepository bookrepository;
 	@PostMapping("/saveBook")
@@ -36,7 +46,7 @@ public String addBookForm(Model model) {
 		b.setTitle(book.getTitle());
 		b.setPrice(book.getPrice());
 		bookrepository.save(b);
-		 model.addAttribute("message", "The book " + b.getTitle() +" is saved successfully");
+		model.addAttribute("message", "The book " + b.getTitle() +" is saved successfully");
 		return "redirect:/Book";
 		
 	}
