@@ -13,7 +13,7 @@ public class User {
 	
 	private String name;
 	
-	private Integer dob;
+	private String dob;
 	private String address;
 	
 	private String email;
@@ -28,11 +28,11 @@ public class User {
 		this.name = name;
 	}
 
-	public Integer getDob() {
+	public String getDob() {
 		return dob;
 	}
 
-	public void setDob(Integer dob) {
+	public void setDob(String dob) {
 		this.dob = dob;
 	}
 
