@@ -11,12 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.example.demo.Service.CustomUserDetailsService;
+import com.example.demo.services.CustomUserDetailsService;
 
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class securityConfig {
    
    
     @Autowired
@@ -32,20 +32,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(c -> c.disable())
             .authorizeHttpRequests(request -> request
-                .requestMatchers("/registration", "/css/**", "/js/**","/api/**").permitAll() // Modified this line
+                .requestMatchers("/registration", "/css/**", "/js/**","/api/**").permitAll() 
                 .anyRequest().authenticated())
             .formLogin(form -> form
                 .loginPage("/login").loginProcessingUrl("/login")
                 .defaultSuccessUrl("/create", true).permitAll())
             .logout(form -> form
-                    .invalidateHttpSession(true).clearAuthentication(true)
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/login?logout").permitAll());
+                .invalidateHttpSession(true).clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login?logout").permitAll());
            
         return http.build();
     }
 
-   
+
     @Autowired
     public void configure (AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());

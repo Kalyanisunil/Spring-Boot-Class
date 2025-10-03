@@ -11,6 +11,9 @@ public class Book {
     public Integer id;
     private String title;
     private String author_name;
+    private String description;
+    private Integer pub_date;
+    
     private Float price;
 	
    
@@ -41,5 +44,17 @@ public class Book {
 
 	public void setAuthor_name(String author_name) {
 		this.author_name = author_name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public Integer getPub_date() {
+		return pub_date;
+	}
+	public void setPub_date(Integer pub_date) {
+		this.pub_date = pub_date;
 	}
 }

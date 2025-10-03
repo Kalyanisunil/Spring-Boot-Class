@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.Dto.userDto;
-import com.example.demo.Service.UserService;
+import com.example.demo.services.UserService;
+
+
 
 
 @Controller
@@ -30,11 +32,5 @@ public class UserController {
         model.addAttribute("username", userName);
         
         return "welcome";
-    }
-    
-    @GetMapping("/login")
-    public String login()
-    {
-    	return "login";
     }
 }
