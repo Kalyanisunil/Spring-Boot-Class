@@ -1,11 +1,14 @@
 package com.example.demo.Models;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Book_mark {
@@ -18,10 +21,24 @@ public class Book_mark {
 		
 		private String title;
 		private String url;
-		private LocalDate date;
+		
+		 @CreationTimestamp
+		private LocalDateTime addedTime;
+		 
+		 @ManyToOne
+		 @JoinColumn(name = "user_id") 
+		    private User user;
 		
 		
 		
+		public User getUser() {
+			return user;
+		}
+
+		 public void setUser(User user) {
+			 this.user = user;
+		 }
+
 		public int getId() {
 			return id;
 		}
@@ -38,12 +55,7 @@ public class Book_mark {
 			this.title = title;
 		}
 		
-		public LocalDate getDate() {
-			return date;
-		}
-		public void setDate(LocalDate date) {
-			this.date = date;
-		}
+	
 		public String getUrl() {
 			return url;
 		}
@@ -51,9 +63,22 @@ public class Book_mark {
 			this.url = url;
 		}
 
+		
+		
+		public LocalDateTime getAddedTime()
+		{
+			return addedTime;
+		}
+	
+		
+
 		@Override
 		public String toString() {
-			return "Book_mark [id=" + id + ", title=" + title + ", url=" + url + ", date=" + date + "]";
+			return "Book_mark [id=" + id + ", title=" + title + ", url=" + url + ", addedTime=" + addedTime + "]";
 		}
+
+	
+		
+		
 		
 }

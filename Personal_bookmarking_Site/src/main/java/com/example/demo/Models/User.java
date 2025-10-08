@@ -1,9 +1,12 @@
 package com.example.demo.Models;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -17,6 +20,8 @@ public class User {
 	private String email;
 	 private String token;
 	 
+	 @OneToMany(mappedBy = "user")
+	    private List<Book_mark> bookmarks;
 	
 	
 	public User(int id, String username, String password, String email, String token) {
@@ -61,6 +66,11 @@ public class User {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public int getId() {
+		// TODO Auto-generated method stub
+		return id;
 	}
 	
 	
