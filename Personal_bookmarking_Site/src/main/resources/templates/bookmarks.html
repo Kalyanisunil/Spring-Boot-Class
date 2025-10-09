@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Bookmarks</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Your Bookmarks</h1>
+
+<a href="/bookmarks/add">Add New Bookmark</a> |
+<a href="/logout">Logout</a>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>URL</th>
+            <th>Added Time</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="bookmark : ${bookmarks}">
+            <td th:text="${bookmark.title}"></td>
+            <td><a th:href="${bookmark.url}" target="_blank" th:text="${bookmark.url}"></a></td>
+            <td th:text="${bookmark.addedTime}"></td>
+            <td>
+                <a th:href="@{/bookmarks/edit/{id}(id=${bookmark.id})}">Edit</a> |
+                <a th:href="@{/bookmarks/delete/{id}(id=${bookmark.id})}" 
+                   onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.BookmarkDTO;
+import com.example.demo.DTO.BookmarkDisplayDTO;
 import com.example.demo.Models.Book_mark;
 import com.example.demo.Models.User;
 import com.example.demo.Repository.BookmarkRepository;
@@ -40,14 +41,27 @@ public class BookmarkServiceImpl implements BookmarkService {
 		 User loggedInUser = userRepository.findByEmail(userdetails.getUsername());
 		 
 		  List<Book_mark> bookmarks = repo.findByUser(loggedInUser);
-		    List<BookmarkDTO> bookmarkDTOs = new ArrayList<>();
+		    List<BookmarkDTO> bookmarksDTOs = new ArrayList<>();
 
 		    for (Book_mark b : bookmarks) {
-		        BookmarkDTO dto = new BookmarkDTO(b.getId(), b.getTitle(), b.getUrl(), null, b.getAddedTime());
-		        bookmarkDTOs.add(dto);
+		        BookmarkDTO dto = new BookmarkDTO(b.getId(), b.getTitle(), b.getUrl(),null, b.getAddedTime());
+		        bookmarksDTOs.add(dto);
 		    }
 
-		    return bookmarkDTOs;
+		    return bookmarksDTOs;
+	}
+	
+	@Override
+	public List<BookmarkDisplayDTO> findAllForAll() {
+	    List<Book_mark> bookmarks = repo.findAll();
+	    List<BookmarkDisplayDTO> bookmarkDTOs = new ArrayList<>();
+
+	    for (Book_mark b : bookmarks) {
+	    	BookmarkDisplayDTO dto = new BookmarkDisplayDTO(b.getTitle(), b.getUrl());
+	        bookmarkDTOs.add(dto);
+	    }
+
+	    return bookmarkDTOs;
 	}
 
 	@Override
@@ -77,9 +91,23 @@ public class BookmarkServiceImpl implements BookmarkService {
 	@Override
 	@Transactional
 	public void deleteByid(int theId) {
-		// TODO Auto-generated method stub
-		repo.deleteById(theId);
+	    Book_mark bookmark = repo.findById(theId);
+	    if (bookmark == null) {
+	        throw new RuntimeException("Bookmark not found");
+	    }
+
+	    CustomUserDetail userdetails =
+	        (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    User loggedInUser = userRepository.findByEmail(userdetails.getUsername());
+
+	    if (!(bookmark.getUser().getId()==loggedInUser.getId())) {
+	        throw new RuntimeException("Access denied!");
+	    }
+
+	    repo.delete(bookmark);
 	}
+
+	
 	
 	
 }

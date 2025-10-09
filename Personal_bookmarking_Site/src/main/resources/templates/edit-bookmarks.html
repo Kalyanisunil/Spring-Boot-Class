@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Bookmark</title>
+</head>
+<body>
+<h2>Edit Bookmark</h2>
+
+<form th:action="@{/bookmarks/edit/{id}(id=${bookmark.id})}" th:object="${bookmark}" method="post">
+    Title: <input type="text" th:field="*{title}" required><br><br>
+    URL: <input type="url" th:field="*{url}" required><br><br>
+    <button type="submit">Update</button>
+</form>
+
+<a href="/bookmarks">Back</a>
+</body>
+</html>
