@@ -10,21 +10,28 @@ import com.example.demo.Models.User;
 public class CustomUserDetail implements UserDetails {
 
 
-    private User user;
+    private final User user; // Made final for best practice
 
 
     public CustomUserDetail(User user) {
         this.user = user;
     }
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+    // CRITICAL: This is the missing piece that allows the controller to access the User object
+    public User getUser() {
+        return this.user;
     }
 
 
-    public String getFullname() {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Assuming no specific roles for simplicity
+        return List.of(); 
+    }
+
+
+    // Changed getFullname() to getUsername() of the User model for clarity
+    public String getFullname() { 
         return user.getUsername();
     }
 
@@ -38,7 +45,7 @@ public class CustomUserDetail implements UserDetails {
     @Override
     public String getUsername() {
        
-        return user.getEmail();
+        return user.getEmail(); // Email used as the login username
     }
 
 

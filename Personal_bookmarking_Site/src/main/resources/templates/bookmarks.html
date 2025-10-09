@@ -1,37 +1,93 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>My Bookmarks</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>My Private Bookmarks</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-<h1>Your Bookmarks</h1>
 
-<a href="/bookmarks/add">Add New Bookmark</a> |
-<a href="/logout">Logout</a>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">My Secure Bookmarks</span>
+            <div class="d-flex">
+                <span class="navbar-text me-3">
+                    Logged in as: <strong sec:authentication="name">User</strong>
+                </span>
+                <a th:href="@{/bookmarks/public}" class="btn btn-outline-light me-2">View Others'</a>
+                <a th:href="@{/logout}" class="btn btn-outline-danger">Logout</a>
+            </div>
+        </div>
+    </nav>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>URL</th>
+    <div class="container mt-4">
+        <h1 class="mb-4">My Bookmarks <span class="badge bg-secondary" th:text="${'(' + #lists.size(Bookmarks) + '/5)'}"></span></h1>
+
+        <!-- Flash Messages (Alerts) -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <p th:text="${successMessage}" class="mb-0"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <p th:text="${errorMessage}" class="mb-0"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Add New Bookmark Form -->
+        <div class="card mb-5 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title h5 mb-0">Add New Bookmark</h2>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/bookmarks/add}" th:object="${newBookmark}" method="post" class="row g-3">
+                    <div class="col-md-5">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" id="title" th:field="*{title}" class="form-control" required />
+                    </div>
+                    <div class="col-md-5">
+                        <label for="url" class="form-label">URL</label>
+                        <input type="url" id="url" th:field="*{url}" class="form-control" placeholder="https://" required />
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-success w-100">Add Bookmark</button>
+                    </div>
+                </form>
+            </div>
+        </div>
         
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="bookmark : ${Bookmarks}">
-            <td th:text="${bookmark.title}"></td>
-            <td><a th:href="${bookmark.url}" target="_blank" th:text="${bookmark.url}"></a></td>
-           
-            <td>
-                <a th:href="@{/bookmarks/edit/{id}(id=${bookmark.id})}">Edit</a> |
-                <a th:href="@{/bookmarks/delete/{id}(id=${bookmark.id})}" 
-                   onclick="return confirm('Are you sure?')">Delete</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
+        <!-- List of Bookmarks -->
+        <h2 class="mb-3">Your Current Bookmarks</h2>
+        <div th:each="bookmark : ${Bookmarks}" class="card shadow-sm mb-3">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="card-title text-primary" th:text="${bookmark.title}">Bookmark Title</h5>
+                    <p class="card-text mb-0">
+                        <a th:href="${bookmark.url}" th:text="${bookmark.url}" target="_blank" class="text-decoration-none"></a>
+                    </p>
+                </div>
+                <div class="d-flex flex-shrink-0">
+                    <!-- Edit Button -->
+                    <a th:href="@{/bookmarks/edit/{id}(id=${bookmark.id})}" class="btn btn-sm btn-outline-secondary me-2">Edit</a>
+                    
+                    <!-- Delete Form -->
+                    <form th:action="@{/bookmarks/delete/{id}(id=${bookmark.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                onclick="return confirm('Are you sure you want to delete the bookmark: ' + this.closest('.card-body').querySelector('.card-title').textContent + '?');">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div th:if="${#lists.isEmpty(Bookmarks)}" class="alert alert-info mt-3">
+            You haven't added any bookmarks yet. Use the form above to get started!
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
