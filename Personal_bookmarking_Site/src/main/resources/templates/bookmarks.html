@@ -15,15 +15,15 @@
         <tr>
             <th>Title</th>
             <th>URL</th>
-            <th>Added Time</th>
+        
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        <tr th:each="bookmark : ${bookmarks}">
+        <tr th:each="bookmark : ${Bookmarks}">
             <td th:text="${bookmark.title}"></td>
             <td><a th:href="${bookmark.url}" target="_blank" th:text="${bookmark.url}"></a></td>
-            <td th:text="${bookmark.addedTime}"></td>
+           
             <td>
                 <a th:href="@{/bookmarks/edit/{id}(id=${bookmark.id})}">Edit</a> |
                 <a th:href="@{/bookmarks/delete/{id}(id=${bookmark.id})}" 

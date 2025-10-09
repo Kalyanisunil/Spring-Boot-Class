@@ -41,7 +41,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()) 
                 .formLogin(form -> form
                         .loginPage("/login").loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/create", true).permitAll()) // Form login settings
+                        .defaultSuccessUrl("/bookmarks", true).permitAll()) // Form login settings
                 .logout(logout -> logout
                         .invalidateHttpSession(true).clearAuthentication(true)
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

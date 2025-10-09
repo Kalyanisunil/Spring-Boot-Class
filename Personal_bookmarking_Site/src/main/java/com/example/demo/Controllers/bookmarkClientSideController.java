@@ -17,7 +17,7 @@ public class bookmarkClientSideController {
 
     @GetMapping()
     public String viewBookmarks(Model model) {
-        model.addAttribute("bookmarks", bookmarkService.findAllForAll());
+        model.addAttribute("Bookmarks", bookmarkService.findAllForAll());
         return "bookmarks";
     }
 
