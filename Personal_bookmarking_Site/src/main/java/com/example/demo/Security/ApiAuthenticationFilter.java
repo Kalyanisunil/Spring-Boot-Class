@@ -57,7 +57,7 @@ public class ApiAuthenticationFilter extends OncePerRequestFilter {
             }
         } else if (request.getRequestURI().startsWith("/api/") 
                 && !request.getRequestURI().equals("/api/register") 
-                && !request.getRequestURI().equals("/api/allbookmarks") 
+                && !request.getRequestURI().equals("/api/all") 
                 && !request.getRequestURI().equals("/api/login")) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Token required");
