@@ -207,4 +207,10 @@ public class BookmarkServiceImpl implements BookmarkService {
         
 	    repo.deleteById(id);
     }
+
+	@Override
+	public List<Book_mark> searchByTitle(String title) {
+		// TODO Auto-generated method stub
+		return repo.findByTitle(title);
+	}
 }

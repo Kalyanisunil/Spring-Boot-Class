@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.example.demo.Models.Book_mark;
 import com.example.demo.Models.User;
@@ -18,5 +19,7 @@ public interface BookmarkRepository extends JpaRepository<Book_mark,Integer> {
 		
 		// CRITICAL: Find a specific bookmark by its ID AND its owner (for ownership check on edit/delete)
 		Optional<Book_mark> findByIdAndUser(int id, User user);
+		
+		 List<Book_mark> findByTitle(@Param("searchText") String searchText);
 	
 }

@@ -22,6 +22,7 @@ public interface BookmarkService {
 	Book_mark updateBookmark(int id, Book_mark updatedData, User user);
 
 	void deleteBookmark(int id, User user);
+	List<Book_mark> searchByTitle(String title);
 
 	
 	

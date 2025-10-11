@@ -12,6 +12,7 @@ import com.example.demo.Models.User;
 import com.example.demo.Services.BookmarkService;
 import com.example.demo.Services.CustomUserDetail;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -21,9 +22,7 @@ public class bookmarkClientSideController {
     @Autowired
     private BookmarkService bookmarkService;
     
-    // -------------------------------------------------------------------------
-    // Helper: Safely get the actual User entity from the authenticated principal
-    // -------------------------------------------------------------------------
+   
     private User getCurrentUser(CustomUserDetail userDetails) {
         // This is safe because Spring Security guarantees userDetails is present here.
         return userDetails.getUser();
@@ -35,9 +34,7 @@ public class bookmarkClientSideController {
         return "redirect:/bookmarks/my"; // Renamed from /allbookmarks for clarity
     }
 
-    // -------------------------------------------------------------------------
-    // 1. View My Bookmarks (Private) - INCLUDES FORM INITIALIZATION
-    // -------------------------------------------------------------------------
+ 
     @GetMapping("/my")
     public String viewMyBookmarks(@AuthenticationPrincipal CustomUserDetail userDetails, Model model) {
         User currentUser = getCurrentUser(userDetails);
@@ -50,21 +47,26 @@ public class bookmarkClientSideController {
         return "bookmarks"; // Note: Ensure your template is named 'my-bookmarks.html'
     }
     
-    // -------------------------------------------------------------------------
-    // 2. View Public Bookmarks (Others')
-    // -------------------------------------------------------------------------
+  
     @GetMapping("/public")
     public String viewPublicBookmarks(@AuthenticationPrincipal CustomUserDetail userDetails, Model model) {
         User currentUser = getCurrentUser(userDetails);
         
         model.addAttribute("Bookmarks", bookmarkService.findAllPublicBookmarks(currentUser));
         model.addAttribute("currentUser", currentUser); 
-        return "public-bookmarks";
+        return "bookmarks";
     }
     
-    // -------------------------------------------------------------------------
-    // 3. Add New Bookmark (POST)
-    // -------------------------------------------------------------------------
+    @GetMapping("/search")
+    public String searchBookmarks(@RequestParam("keyword") String keyword, Model model) {
+        List<Book_mark> results = bookmarkService.searchByTitle(keyword);
+        model.addAttribute("bookmarks", results);
+        model.addAttribute("newBookmark", new Book_mark());
+        model.addAttribute("keyword", keyword);
+        return "search-bookmark";
+    }
+
+   
     @PostMapping("/add")
     public String addBookmark(@ModelAttribute("newBookmark") Book_mark newBookmark, 
                               @AuthenticationPrincipal CustomUserDetail userDetails,
@@ -84,9 +86,7 @@ public class bookmarkClientSideController {
     }
 
    
-    // -------------------------------------------------------------------------
-    // 4. Show Edit Form (GET - Secure Check)
-    // -------------------------------------------------------------------------
+ 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, 
                                @AuthenticationPrincipal CustomUserDetail userDetails, 
@@ -108,9 +108,6 @@ public class bookmarkClientSideController {
     }
 
 
-    // -------------------------------------------------------------------------
-    // 5. Update Submission (POST - Secure Check)
-    // -------------------------------------------------------------------------
     @PostMapping("/edit/{id}")
     public String updateBookmark(@PathVariable int id, 
                                  @ModelAttribute("bookmark") Book_mark updatedBookmark,
@@ -130,10 +127,6 @@ public class bookmarkClientSideController {
         return "redirect:/bookmarks/my";
     }
 
-  
-    // -------------------------------------------------------------------------
-    // 6. Delete Bookmark (POST - Secure Check)
-    // -------------------------------------------------------------------------
     @PostMapping("/delete/{id}")
     public String deleteBookmark(@PathVariable int id,
                                  @AuthenticationPrincipal CustomUserDetail userDetails,
